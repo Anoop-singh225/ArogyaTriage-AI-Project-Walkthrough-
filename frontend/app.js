@@ -132,40 +132,42 @@ function updateLiveTriagePreview() {
     const pulse = parseInt(document.getElementById('v-pulse').value) || 75;
     const temp = parseFloat(document.getElementById('v-temp').value) || 98.6;
     const pain = parseInt(document.getElementById('v-pain').value) || 0;
-    const transcript = document.getElementById('p-transcript').value.toLowerCase();
+    const transcript = (document.getElementById('p-transcript').value || '').toLowerCase();
 
     const card = document.getElementById('live-triage-card');
     const dot = document.getElementById('triage-dot');
     const title = document.getElementById('triage-tier-title');
     const badge = document.getElementById('triage-badge');
+    const diffs = document.getElementById('triage-differentials');
+    const advisory = document.getElementById('triage-advisory');
     const rationale = document.getElementById('triage-rationale');
 
-    // Rule check
-    if (spo2 < 90 || sbp < 80 || sbp >= 180 || pulse > 135 || pain >= 8 || transcript.includes('छाती') || transcript.includes('chest')) {
-        card.className = 'rounded-xl border border-red-500/60 bg-red-950/30 p-4 transition-all duration-300 space-y-2';
-        dot.className = 'w-3.5 h-3.5 rounded-full bg-red-500 animate-ping';
-        title.className = 'text-sm font-black tracking-wide text-red-400';
-        title.innerText = 'PRIORITY RED (ESI LEVEL 1-2)';
-        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40';
-        badge.innerText = 'IMMEDIATE ATTENTION';
-        rationale.innerHTML = '<strong>Safety Guardrail Active:</strong> Critical vital warning or acute red-flag symptoms detected. Prioritized for immediate physician examination.';
-    } else if (temp >= 101.5 || pulse > 100 || transcript.includes('बुखार') || transcript.includes('fever') || transcript.includes('उल्टी')) {
-        card.className = 'rounded-xl border border-amber-500/60 bg-amber-950/30 p-4 transition-all duration-300 space-y-2';
-        dot.className = 'w-3.5 h-3.5 rounded-full bg-amber-500';
-        title.className = 'text-sm font-black tracking-wide text-amber-400';
-        title.innerText = 'PRIORITY YELLOW (ESI LEVEL 3)';
-        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40';
-        badge.innerText = 'URGENT PHC EVALUATION';
-        rationale.innerHTML = '<strong>Moderate Urgency:</strong> Elevated temperature/pulse or systemic symptoms. Requires clinical evaluation and lab investigations.';
+    if (spo2 < 90 || sbp < 80 || sbp >= 180 || pulse > 135 || pain >= 8 || transcript.includes('छाती') || transcript.includes('chest') || transcript.includes('saans')) {
+        if (card) card.className = 'rounded-xl border border-red-500/60 bg-red-950/30 p-4 transition-all duration-300 space-y-3 shadow-xl';
+        if (dot) dot.className = 'w-3 h-3 rounded-full bg-red-500 animate-ping';
+        if (title) { title.className = 'text-xs font-black tracking-wide text-red-400'; title.innerText = 'PRIORITY RED (ESI LEVEL 1-2) • CRITICAL EMERGENCY'; }
+        if (badge) { badge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40'; badge.innerText = 'IMMEDIATE RESUSCITATION'; }
+        if (diffs) diffs.innerText = 'Acute Coronary Syndrome (STEMI / Angina) • Hypertensive Crisis • Hypoxemic Respiratory Failure';
+        if (advisory) advisory.innerText = '🚨 EMERGENCY ACTION: Keep patient semi-reclined. Start high-flow O2 (4-6 L/min) via mask immediately. Loosen tight clothing. DO NOT give oral fluids. Alert Medical Officer for immediate ECG & District ICU referral.';
+        if (rationale) rationale.innerHTML = '<strong>Safety Guardrail Active:</strong> Critical vital warning (SpO2 < 90% or SBP > 180 mmHg) detected. Prioritized for immediate physician examination.';
+    } else if (temp >= 101.5 || pulse > 100 || transcript.includes('बुखार') || transcript.includes('fever') || transcript.includes('उल्टी') || transcript.includes('vomit') || transcript.includes('pet')) {
+        if (card) card.className = 'rounded-xl border border-amber-500/60 bg-amber-950/30 p-4 transition-all duration-300 space-y-3 shadow-xl';
+        if (dot) dot.className = 'w-3 h-3 rounded-full bg-amber-500';
+        if (title) { title.className = 'text-xs font-black tracking-wide text-amber-400'; title.innerText = 'PRIORITY YELLOW (ESI LEVEL 3) • URGENT CARE'; }
+        if (badge) { badge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40'; badge.innerText = 'URGENT PHC EVALUATION'; }
+        if (diffs) diffs.innerText = 'Acute Febrile Illness (Suspected Dengue / Malaria) • Acute Gastroenteritis & Dehydration';
+        if (advisory) advisory.innerText = '⚠️ URGENT ADVISORY: Start Oral Rehydration Salts (ORS) sip-by-sip immediately. Cold sponging if fever > 101.5°F. Perform Rapid Diagnostic Test (RDT) for Malaria/Dengue at clinic desk.';
+        if (rationale) rationale.innerHTML = '<strong>Moderate Urgency:</strong> Elevated temperature/pulse or systemic dehydration symptoms. Fast-tracked for doctor consultation within 15 minutes.';
     } else {
-        card.className = 'rounded-xl border border-emerald-500/60 bg-emerald-950/30 p-4 transition-all duration-300 space-y-2';
-        dot.className = 'w-3.5 h-3.5 rounded-full bg-emerald-500';
-        title.className = 'text-sm font-black tracking-wide text-emerald-400';
-        title.innerText = 'PRIORITY GREEN (ESI LEVEL 4-5)';
-        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-        badge.innerText = 'ROUTINE CONSULTATION';
-        rationale.innerHTML = '<strong>Stable Presentation:</strong> Vitals within normal physiological range. Standard outpatient consultation and prescription refill.';
+        if (card) card.className = 'rounded-xl border border-emerald-500/60 bg-emerald-950/30 p-4 transition-all duration-300 space-y-3 shadow-xl';
+        if (dot) dot.className = 'w-3 h-3 rounded-full bg-emerald-400';
+        if (title) { title.className = 'text-xs font-black tracking-wide text-emerald-400'; title.innerText = 'PRIORITY GREEN (ESI LEVEL 4-5) • ROUTINE CARE'; }
+        if (badge) { badge.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'; badge.innerText = 'ROUTINE CONSULTATION'; }
+        if (diffs) diffs.innerText = 'Osteoarthritis Knee (Degenerative Joint Disease) • Essential Hypertension (Chronic Follow-up)';
+        if (advisory) advisory.innerText = '🟢 PRIMARY CARE GUIDANCE: Rest the affected joint, avoid sudden strenuous weight-bearing or ground squatting. Continue low-sodium diet and daily BP log. Doctor will review previous prescription history and dispense fresh monthly medication.';
+        if (rationale) rationale.innerHTML = '<strong>Stable Presentation:</strong> Vitals within normal physiological range. Standard outpatient consultation and prescription renewal.';
     }
+    if (window.lucide) lucide.createIcons();
 }
 
 // Submit Triage Assessment to Backend
