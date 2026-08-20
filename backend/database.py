@@ -138,6 +138,7 @@ def seed_initial_data():
     conn.close()
 
 def save_assessment(a: TriageAssessment):
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute('''
@@ -159,6 +160,7 @@ def save_assessment(a: TriageAssessment):
     conn.close()
 
 def get_live_queue() -> List[Dict[str, Any]]:
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -183,6 +185,7 @@ def get_live_queue() -> List[Dict[str, Any]]:
     return queue
 
 def get_all_assessments(limit: int = 50) -> List[Dict[str, Any]]:
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -200,6 +203,7 @@ def get_all_assessments(limit: int = 50) -> List[Dict[str, Any]]:
     return items
 
 def update_patient_status(assessment_id: str, new_status: str):
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("UPDATE assessments SET status = ? WHERE id = ?", (new_status, assessment_id))
@@ -207,6 +211,7 @@ def update_patient_status(assessment_id: str, new_status: str):
     conn.close()
 
 def save_doctor_note(note: DoctorConsultationNote):
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute('''
@@ -223,3 +228,6 @@ def save_doctor_note(note: DoctorConsultationNote):
     cur.execute("UPDATE assessments SET status = ? WHERE id = ?", (final_status, note.assessment_id))
     conn.commit()
     conn.close()
+
+# Auto-initialize on load
+init_db()
