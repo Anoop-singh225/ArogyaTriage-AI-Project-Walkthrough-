@@ -76,8 +76,8 @@
         <div class="border-t border-slate-700/60 bg-slate-850/50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 py-2 overflow-x-auto">
                 <button onclick="switchTab('asha-tab')" id="nav-asha-tab" class="tab-btn active flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    <i data-lucide="mic" class="w-4 h-4 text-cyan-400"></i>
-                    <span>1. ASHA Voice Intake Studio</span>
+                    <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i>
+                    <span>1. AI Health Q&A & Intake Studio</span>
                 </button>
                 <button onclick="switchTab('doctor-tab')" id="nav-doctor-tab" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
                     <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-400"></i>
@@ -99,33 +99,83 @@
     <!-- Main Workspace -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-        <!-- ========================================== -->
-        <!-- TAB 1: ASHA INTAKE STUDIO                  -->
-        <!-- ========================================== -->
+        <!-- TAB 1: ASHA INTAKE & AI Q&A STUDIO -->
         <div id="asha-tab" class="tab-content block space-y-6">
-            <!-- Hero banner -->
-            <div class="bg-gradient-to-r from-cyan-950/40 via-slate-800 to-slate-800/80 border border-cyan-800/40 rounded-2xl p-6 relative overflow-hidden shadow-xl">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                            <span>Frontline Health Worker Voice Intake</span>
-                            <span class="text-xs font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-2.5 py-0.5 rounded-full">Dual-Engine AI</span>
-                        </h2>
-                        <p class="text-slate-300 text-sm mt-1 max-w-2xl">
-                            Speak patient complaints in Hindi, English, or regional dialects. System automatically extracts symptoms, validates deterministic vitals safety guardrails, and assigns Emergency Severity Index (ESI).
-                        </p>
+
+            <!-- 🌟 DEDICATED INSTANT AI HEALTH Q&A SEARCH BAR -->
+            <div class="bg-gradient-to-r from-blue-950/80 via-slate-850 to-slate-900 border-2 border-cyan-500/50 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i>
                     </div>
-                    <!-- Quick Preset Buttons -->
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-xs font-semibold text-slate-400 self-center mr-1">Load Demo Case:</span>
-                        <button onclick="loadPreset('cardiac')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-500/15 text-red-300 border border-red-500/40 hover:bg-red-500/25 transition flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-red-500"></span> 🚨 Severe Chest Pain (Red)
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+                            <span>AI Medical Symptom Solver & Health Assistant</span>
+                            <span class="text-[11px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-full">Instant Response</span>
+                        </h2>
+                        <p class="text-xs text-slate-300">कोई भी स्वास्थ्य समस्या, लक्षण या सवाल यहाँ लिखें / पूछें — AI तुरंत निदान, प्राथमिक उपचार और उपाय बताएगा:</p>
+                    </div>
+                </div>
+
+                <!-- Search Input with Ask Button -->
+                <div class="flex flex-col sm:flex-row items-stretch gap-3">
+                    <div class="relative flex-1">
+                        <input type="text" id="ai-query-input" placeholder="उदा: 3 दिन से तेज बुखार और उल्टी है क्या करें? / छाती में दर्द हो रहा है..." value="छाती में बहुत तेज दर्द और जकड़न हो रही है, पसीना आ रहा है" class="w-full bg-slate-950 border-2 border-slate-700 focus:border-cyan-400 rounded-xl px-4 py-3.5 text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none transition shadow-inner">
+                        <button onclick="toggleVoiceRecording()" title="Speak Query" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 transition">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="loadPreset('fever')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/40 hover:bg-amber-500/25 transition flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> ⚠️ High Fever 3d (Yellow)
-                        </button>
-                        <button onclick="loadPreset('routine')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/25 transition flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 🟢 BP Medicine Refill (Green)
+                    </div>
+                    <button onclick="askAIHealthAssistant()" id="btn-ask-ai" class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-cyan-500/30 transition transform active:scale-95">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        <span>Ask AI (उत्तर पाएं)</span>
+                    </button>
+                </div>
+
+                <!-- Quick Query Chips -->
+                <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                    <span class="text-slate-400 font-semibold">Quick Questions:</span>
+                    <button onclick="setAndAskQuery('छाती में बहुत तेज दर्द और पसीना आ रहा है')" class="px-3 py-1 rounded-full bg-red-500/15 text-red-300 border border-red-500/40 hover:bg-red-500/25 transition">🚨 छाती में दर्द व पसीना</button>
+                    <button onclick="setAndAskQuery('3 दिन से तेज बुखार, ठंड और बार-बार उल्टी')" class="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/40 hover:bg-amber-500/25 transition">⚠️ तेज बुखार व उल्टी</button>
+                    <button onclick="setAndAskQuery('घुटनों में दर्द और बीपी की दवा रिन्यू करानी है')" class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/25 transition">🟢 घुटने में दर्द / BP Refill</button>
+                    <button onclick="setAndAskQuery('पेट में बहुत तेज जलन, गैस और बदहजमी है')" class="px-3 py-1 rounded-full bg-slate-700 text-slate-300 hover:bg-slate-600 transition">⚡ पेट में जलन व गैस</button>
+                    <button onclick="setAndAskQuery('अचानक तेज सिरदर्द और चक्कर आ रहे हैं')" class="px-3 py-1 rounded-full bg-slate-700 text-slate-300 hover:bg-slate-600 transition">🧠 तेज सिरदर्द व चक्कर</button>
+                </div>
+
+                <!-- 🎯 DYNAMIC INSTANT AI ANSWER CARD -->
+                <div id="ai-answer-card" class="mt-4 bg-slate-950 border-2 border-red-500/70 rounded-xl p-4 sm:p-5 space-y-3 shadow-xl">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
+                        <div>
+                            <span class="text-[10px] font-mono text-cyan-400 uppercase font-bold tracking-wider">AI Medical Diagnosis & Assessment</span>
+                            <h3 id="ans-condition" class="text-base sm:text-lg font-bold text-white">Severe Acute Chest Pain / Suspected Cardiac Risk (छाती में दर्द / एंजाइना या दिल का दौरा)</h3>
+                        </div>
+                        <span id="ans-tier-badge" class="px-3 py-1 rounded-full text-xs font-black bg-red-500/20 text-red-300 border border-red-500/40 animate-pulse">🚨 EMERGENCY (PRIORITY RED)</span>
+                    </div>
+
+                    <!-- Clinical Explanation -->
+                    <p id="ans-explanation" class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                        छाती में तेज दर्द, भारीपन या पसीना आना दिल की नसों में खून का बहाव कम होने (Angina / Heart Attack) या फेफड़ों की गंभीर समस्या का संकेत हो सकता है। यह एक इमरजेंसी स्थिति है।
+                    </p>
+
+                    <!-- First Aid & Instant Actions -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-3 space-y-1.5">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="shield-alert" class="w-4 h-4"></i> तुरंत प्राथमिक उपचार और बचाव (Instant First-Aid & Action):
+                        </span>
+                        <ul id="ans-first-aid" class="text-xs text-slate-300 space-y-1 list-disc list-inside">
+                            <li>मरीज को तुरंत आरामदायक स्थिति में आधा लेटा दें (Semi-reclined posture).</li>
+                            <li>गले और छाती के कपड़े ढीले कर दें और खुली हवादार जगह में रखें।</li>
+                            <li>तुरंत मेडिकल ऑफिसर को सूचित करें और 108 एम्बुलेंस से डिस्ट्रिक्ट आईसीयू के लिए तैयार रहें।</li>
+                        </ul>
+                    </div>
+
+                    <!-- Red Flags -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 text-xs">
+                        <div class="text-red-400">
+                            <strong>⚠️ खतरे के लक्षण (Red Flags):</strong> <span id="ans-red-flags">दर्द बाएं हाथ/जबड़े में फैलना, सांस फूलना, ठंडा पसीना</span>
+                        </div>
+                        <button onclick="syncQueryToTriageForm()" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow transition flex items-center gap-1.5">
+                            <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+                            <span>Fill in Triage Form Below</span>
                         </button>
                     </div>
                 </div>
@@ -213,7 +263,7 @@
                     </div>
                 </div>
 
-                <!-- Right: Vitals Entry & Live Triage Evaluation (5 cols) -->
+                <!-- Right: Vitals Entry & Submit (5 cols) -->
                 <div class="lg:col-span-5 space-y-6">
                     <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg space-y-4">
                         <div class="flex items-center justify-between border-b border-slate-700 pb-3">
@@ -226,97 +276,59 @@
 
                         <!-- Vitals Grid -->
                         <div class="grid grid-cols-2 gap-3">
-                            <!-- SpO2 -->
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3">
                                 <div class="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1">
                                     <span>SpO2 Saturation</span>
                                     <span class="text-cyan-400 font-mono font-bold">%</span>
                                 </div>
-                                <input type="number" id="v-spo2" value="89" oninput="updateLiveTriagePreview()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
+                                <input type="number" id="v-spo2" value="89" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
                                 <p class="text-[10px] text-slate-400 mt-1">&lt; 90% Triggers Red Alert</p>
                             </div>
 
-                            <!-- Pulse -->
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3">
                                 <div class="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1">
                                     <span>Pulse Rate</span>
                                     <span class="text-red-400 font-mono font-bold">BPM</span>
                                 </div>
-                                <input type="number" id="v-pulse" value="118" oninput="updateLiveTriagePreview()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
+                                <input type="number" id="v-pulse" value="118" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
                                 <p class="text-[10px] text-slate-400 mt-1">Normal: 60 - 100</p>
                             </div>
 
-                            <!-- BP Systolic -->
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3">
                                 <div class="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1">
                                     <span>Systolic BP</span>
                                     <span class="text-amber-400 font-mono font-bold">mmHg</span>
                                 </div>
-                                <input type="number" id="v-sbp" value="178" oninput="updateLiveTriagePreview()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
+                                <input type="number" id="v-sbp" value="178" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
                                 <p class="text-[10px] text-slate-400 mt-1">&gt; 180 Hypertensive Crisis</p>
                             </div>
 
-                            <!-- BP Diastolic -->
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3">
                                 <div class="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1">
                                     <span>Diastolic BP</span>
                                     <span class="text-amber-400 font-mono font-bold">mmHg</span>
                                 </div>
-                                <input type="number" id="v-dbp" value="104" oninput="updateLiveTriagePreview()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
+                                <input type="number" id="v-dbp" value="104" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
                                 <p class="text-[10px] text-slate-400 mt-1">Normal: 70 - 85</p>
                             </div>
 
-                            <!-- Temp -->
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3">
                                 <div class="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1">
                                     <span>Temperature</span>
                                     <span class="text-orange-400 font-mono font-bold">°F</span>
                                 </div>
-                                <input type="number" step="0.1" id="v-temp" value="98.4" oninput="updateLiveTriagePreview()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
+                                <input type="number" step="0.1" id="v-temp" value="98.4" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
                                 <p class="text-[10px] text-slate-400 mt-1">&gt; 103°F Hyperpyrexia</p>
                             </div>
 
-                            <!-- Pain Scale -->
                             <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-3">
                                 <div class="flex justify-between items-center text-xs font-semibold text-slate-300 mb-1">
                                     <span>Pain Severity</span>
                                     <span class="text-purple-400 font-mono font-bold">0-10</span>
                                 </div>
-                                <input type="number" min="0" max="10" id="v-pain" value="9" oninput="updateLiveTriagePreview()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
+                                <input type="number" min="0" max="10" id="v-pain" value="9" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-cyan-500">
                                 <p class="text-[10px] text-slate-400 mt-1">8-10 Severe Acute Pain</p>
                             </div>
-                        </div>
-
-                        <!-- Live Triage Preview Box -->
-                        <!-- Live AI Clinical Triage & Solution Card -->
-                        <div id="live-triage-card" class="rounded-xl border border-cyan-500/50 bg-slate-900/95 p-4 transition-all duration-300 space-y-3 shadow-xl">
-                            <div class="flex items-center justify-between border-b border-slate-700/80 pb-2">
-                                <div class="flex items-center gap-2">
-                                    <span id="triage-dot" class="w-3 h-3 rounded-full bg-emerald-400"></span>
-                                    <span id="triage-tier-title" class="text-xs font-black tracking-wide text-emerald-400">PRIORITY GREEN (ESI LEVEL 4-5)</span>
-                                </div>
-                                <span id="triage-badge" class="text-[10px] font-bold px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">ROUTINE CONSULTATION</span>
-                            </div>
-
-                            <!-- AI Clinical Diagnosis & Differential -->
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1">
-                                    <i data-lucide="brain-circuit" class="w-3.5 h-3.5"></i> AI Clinical Assessment & Diagnosis:
-                                </span>
-                                <p id="triage-differentials" class="text-xs font-semibold text-white">Osteoarthritis Knee • Essential Hypertension (Chronic Follow-up)</p>
-                            </div>
-
-                            <!-- First Aid & Instant Patient Advice -->
-                            <div class="bg-slate-800/80 border border-slate-700 rounded-lg p-2.5 space-y-1">
-                                <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
-                                    <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Instant Action & First-Aid Advisory for ASHA / Patient:
-                                </span>
-                                <p id="triage-advisory" class="text-xs text-slate-200 leading-relaxed">Rest the affected joint, avoid sudden strenuous weight-bearing or ground squatting. Continue low-sodium diet and daily BP log. Doctor will review previous prescription history and dispense fresh monthly medication.</p>
-                            </div>
-
-                            <p id="triage-rationale" class="text-[11px] text-slate-400 leading-relaxed border-t border-slate-800 pt-1.5">
-                                <strong>Vitals Check:</strong> All vitals within stable physiological range. Suitable for routine consultation.
-                            </p>
                         </div>
 
                         <!-- Submit Button -->
@@ -329,11 +341,8 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- TAB 2: DOCTOR'S PRIORITY QUEUE             -->
-        <!-- ========================================== -->
+        <!-- TAB 2: DOCTOR'S PRIORITY QUEUE -->
         <div id="doctor-tab" class="tab-content hidden space-y-6">
-            <!-- Doctor Room Top Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
@@ -387,11 +396,8 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- TAB 3: OUTBREAK RADAR & ANALYTICS          -->
-        <!-- ========================================== -->
+        <!-- TAB 3: OUTBREAK RADAR & ANALYTICS -->
         <div id="analytics-tab" class="tab-content hidden space-y-6">
-            <!-- Metrics Row -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg">
                     <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase mb-2">
@@ -432,9 +438,7 @@
                 </div>
             </div>
 
-            <!-- Outbreak Heatmap & Analytics Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Outbreak Alerts (6 cols) -->
                 <div class="lg:col-span-6 bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -443,13 +447,9 @@
                         </h3>
                         <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded border border-purple-500/40 font-semibold">Real-Time Cluster Detection</span>
                     </div>
-
-                    <div class="space-y-3" id="outbreak-clusters-container">
-                        <!-- Loaded dynamically -->
-                    </div>
+                    <div class="space-y-3" id="outbreak-clusters-container"></div>
                 </div>
 
-                <!-- Triage Distribution Chart (6 cols) -->
                 <div class="lg:col-span-6 bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -465,12 +465,9 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- TAB 4: ABDM / FHIR & OFFLINE SYNC          -->
-        <!-- ========================================== -->
+        <!-- TAB 4: ABDM / FHIR & OFFLINE SYNC -->
         <div id="abdm-tab" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- ABDM FHIR JSON Viewer (7 cols) -->
                 <div class="lg:col-span-7 bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -514,7 +511,6 @@
                     </pre>
                 </div>
 
-                <!-- Offline Sync Simulator (5 cols) -->
                 <div class="lg:col-span-5 bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -532,27 +528,15 @@
                             </button>
                         </div>
                         <div class="text-xs text-slate-400">
-                            When village connectivity drops, ASHA worker tablets buffer triage assessments in local SQLite/IndexedDB storage. Once signal is restored, queued payloads sync automatically with zero data loss.
+                            When village connectivity drops, ASHA worker tablets buffer triage assessments in local SQLite storage and sync automatically once signal is restored.
                         </div>
-                    </div>
-
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2">
-                        <div class="text-xs font-bold text-white flex items-center gap-2">
-                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-                            <span>Security & DISHA Compliance</span>
-                        </div>
-                        <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
-                            <li>End-to-end 256-bit AES database encryption</li>
-                            <li>Zero cloud retention of raw audio recordings</li>
-                            <li>ABDM-compliant consent artifact validation</li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Consultation Modal (Doctor Room) -->
+    <!-- Consultation Modal -->
     <div id="consultation-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-700 pb-3">
@@ -565,13 +549,11 @@
                 </button>
             </div>
 
-            <!-- Pre-generated summary -->
             <div class="bg-slate-900 border border-slate-700 rounded-xl p-3.5 text-xs text-slate-300 space-y-1">
                 <span class="text-cyan-400 font-bold uppercase">AI Synthesized Pre-Consultation Summary:</span>
                 <p id="modal-summary-text">Loading summary...</p>
             </div>
 
-            <!-- Doctor Inputs -->
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Clinical Diagnosis</label>
